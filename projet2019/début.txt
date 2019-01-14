@@ -1,0 +1,51 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Interactive Table</title>
+		<link rel="stylesheet" href="stylesheets/piemenu.css">
+		<script src="javascripts/libs/jquery/dist/jquery.min.js"></script>
+		<script src="javascripts/libs/interact/interact.min.js"></script>
+		<script src="javascripts/libs/tinycolor/tinycolor.js"></script>
+		<script src="javascripts/libs/socket.io-client/socket.io.js"></script>
+		<script src="javascripts/libs/highcharts-release/highcharts.js"></script>
+		<script src="javascripts/pieMenu.js"></script>
+		<script src="main.js"></script>
+	</head>
+	<body>
+		<div id="background">
+
+		</div>
+		<script>
+			var angle = 0;
+			interact('.draggable')
+			  .draggable({
+			    onmove: dragMoveListener
+			  });
+			interact('.tap-target')
+			  .on('tap', function (event) {
+					event.target.click();
+			    event.preventDefault();
+				});
+			interact('#background').gesturable({
+			  onmove: function (event) {
+			    var arrow = document.getElementById('outer_container');
+			    angle += event.da;
+			    arrow.style.webkitTransform =
+			    arrow.style.transform =
+			      'rotate(' + angle + 'deg)';
+			  }
+			});
+		  function dragMoveListener (event) {
+		    var target = event.target,
+		        x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
+		        y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+		    target.style.webkitTransform =
+		    target.style.transform =
+		      'translate(' + x + 'px, ' + y + 'px)';
+		    target.setAttribute('data-x', x);
+		    target.setAttribute('data-y', y);
+		  }
+		</script>
+	</body>
+</html>
